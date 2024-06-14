@@ -15,7 +15,6 @@
 	import type { Model } from "$lib/types/Model";
 	import WebSearchToggle from "../WebSearchToggle.svelte";
 	import ToolsMenu from "../ToolsMenu.svelte";
-	import LoginModal from "../LoginModal.svelte";
 	import { page } from "$app/stores";
 	import FileDropzone from "./FileDropzone.svelte";
 	import RetryBtn from "../RetryBtn.svelte";
@@ -49,7 +48,6 @@
 
 	$: isReadOnly = !models.some((model) => model.id === currentModel.id);
 
-	let loginModalOpen = false;
 	let message: string;
 	let timeout: ReturnType<typeof setTimeout>;
 	let isSharedRecently = false;
@@ -166,13 +164,6 @@
 </script>
 
 <div class="relative min-h-0 min-w-0">
-	{#if loginModalOpen}
-		<LoginModal
-			on:close={() => {
-				loginModalOpen = false;
-			}}
-		/>
-	{/if}
 	<div
 		class="scrollbar-custom mr-1 h-full overflow-y-auto"
 		use:snapScrollToBottom={messages.length ? [...messages] : false}
@@ -244,7 +235,6 @@
 					on:message={(ev) => {
 						if ($page.data.loginRequired) {
 							ev.preventDefault();
-							loginModalOpen = true;
 						} else {
 							dispatch("message", ev.detail);
 						}
@@ -257,7 +247,6 @@
 					on:message={(ev) => {
 						if ($page.data.loginRequired) {
 							ev.preventDefault();
-							loginModalOpen = true;
 						} else {
 							dispatch("message", ev.detail);
 						}
@@ -355,7 +344,6 @@
 								on:beforeinput={(ev) => {
 									if ($page.data.loginRequired) {
 										ev.preventDefault();
-										loginModalOpen = true;
 									}
 								}}
 								on:paste={onPaste}
