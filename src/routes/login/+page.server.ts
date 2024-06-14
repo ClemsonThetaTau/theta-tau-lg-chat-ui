@@ -13,11 +13,9 @@ export const actions = {
 		const idToken = formData.get("idToken");
 
 		// Validate the idToken using zod
-		const { idToken: validatedIdToken } = z
-			.object({
-				idToken: z.string().optional(),
-			})
-			.parse({ idToken });
+		z.object({
+			idToken: z.string().optional(),
+		}).parse({ idToken });
 
 		try {
 			// Verify the Firebase ID token

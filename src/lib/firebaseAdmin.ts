@@ -1,13 +1,10 @@
-import * as admin from "firebase-admin";
+import admin from "firebase-admin";
 import { env } from "$env/dynamic/private";
-import path from "path";
-
-// Path to your service account key
-const serviceAccountPath = path.resolve(env.FIREBASE_ADMIN_KEY);
 
 if (!admin.apps.length) {
+	const serviceAccount = JSON.parse(env.FIREBASE_ADMIN_KEY);
 	admin.initializeApp({
-		credential: admin.credential.cert(serviceAccountPath),
+		credential: admin.credential.cert(serviceAccount),
 	});
 }
 
