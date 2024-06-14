@@ -5,6 +5,7 @@
 	import LogoHuggingFaceBorderless from "$lib/components/icons/LogoHuggingFaceBorderless.svelte";
 	import Modal from "$lib/components/Modal.svelte";
 	import { useSettingsStore } from "$lib/stores/settings";
+	import { error, ERROR_MESSAGES } from "$lib/stores/errors";
 	import { cookiesAreEnabled } from "$lib/utils/cookiesAreEnabled";
 	import Logo from "./icons/Logo.svelte";
 
@@ -30,6 +31,12 @@
 		<p class="text-sm text-gray-500">
 			{envPublic.PUBLIC_APP_DISCLAIMER_MESSAGE}
 		</p>
+
+		{#if $error}
+			<p class="text-lg font-semibold leading-snug text-gray-800 text-red-500">
+				{$error}
+			</p>
+		{/if}
 
 		<div class="flex w-full flex-col items-center gap-2">
 			{#if $page.data.guestMode || !$page.data.loginEnabled}
@@ -63,7 +70,20 @@
 						const password = formData.get("password");
 
 						try {
-							const userCredential = await signInWithEmailAndPassword(auth, username, password);
+							const userCredential = await signInWithEmailAndPassword(
+								auth,
+								username,
+								password
+							).catch((e) => {
+								console.error("Authentication failed");
+								error.set(ERROR_MESSAGES.loginFailed);
+							});
+
+							// If the login fails let the user know
+							if (!userCredential.user) {
+								return;
+							}
+
 							const idToken = await userCredential.user.getIdToken();
 
 							const response = await fetch("/login", {
