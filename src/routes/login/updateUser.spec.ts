@@ -1,7 +1,7 @@
 import { assert, it, describe, afterEach, vi, expect } from "vitest";
 import type { Cookies } from "@sveltejs/kit";
 import { collections } from "$lib/server/database";
-import { updateUser } from "./updateUser";
+import { updateUser } from "../updateUser";
 import { ObjectId } from "mongodb";
 import { DEFAULT_SETTINGS } from "$lib/types/Settings";
 import { defaultModel } from "$lib/server/models";

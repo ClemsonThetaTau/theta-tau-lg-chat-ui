@@ -1,63 +1,60 @@
 <script lang="ts">
-	import { base } from "$app/paths";
+	import { auth } from "$lib/firebase";
 	import { page } from "$app/stores";
-	import { env as envPublic } from "$env/dynamic/public";
-	import LogoHuggingFaceBorderless from "$lib/components/icons/LogoHuggingFaceBorderless.svelte";
-	import Modal from "$lib/components/Modal.svelte";
-	import { useSettingsStore } from "$lib/stores/settings";
-	import { cookiesAreEnabled } from "$lib/utils/cookiesAreEnabled";
-	import Logo from "./icons/Logo.svelte";
+	import { base } from "$app/paths";
+	import { signInWithEmailAndPassword } from "firebase/auth";
 
-	const settings = useSettingsStore();
+	let email = "";
+	let password = "";
+	let error = "";
+
+	const handleSubmit = async (e) => {
+		e.preventDefault();
+		try {
+			const userCredential = await signInWithEmailAndPassword(auth, email, password);
+			const user = userCredential.user;
+
+			// (Optional) Store the session ID or token, if needed
+			// Example: localStorage.setItem("sessionId", user.uid);
+
+			window.location.href = base + "/"; // Redirect to homepage or dashboard
+		} catch (err) {
+			error = "Login failed, please try again.";
+			console.error(err);
+		}
+	};
 </script>
 
 <Modal on:close>
-	<div
-		class="from-primary-500/40 via-primary-500/10 to-primary-500/0 flex w-full flex-col items-center gap-6 bg-gradient-to-b px-5 pb-8 pt-9 text-center"
-	>
-		<h2 class="flex items-center text-2xl font-semibold text-gray-800">
-			<Logo classNames="mr-1" />
-			{envPublic.PUBLIC_APP_NAME}
-		</h2>
-		<p class="text-balance text-lg font-semibold leading-snug text-gray-800">
-			{envPublic.PUBLIC_APP_DESCRIPTION}
-		</p>
-		<p class="text-balance rounded-xl border bg-white/80 p-2 text-base text-gray-800">
-			You have reached the guest message limit, <strong class="font-semibold"
-				>Sign In with a free Hugging Face account</strong
-			> to continue using HuggingChat.
-		</p>
-
-		<form
-			action="{base}/{$page.data.loginRequired ? 'login' : 'settings'}"
-			target="_parent"
-			method="POST"
-			class="flex w-full flex-col items-center gap-2"
-		>
-			{#if $page.data.loginRequired}
-				<button
-					type="submit"
-					class="flex w-full items-center justify-center whitespace-nowrap rounded-full bg-black px-5 py-2 text-center text-lg font-semibold text-gray-100 transition-colors hover:bg-gray-900"
-				>
-					Sign in
-					{#if envPublic.PUBLIC_APP_NAME === "HuggingChat"}
-						with <LogoHuggingFaceBorderless classNames="text-xl mr-1 ml-1.5" /> Hugging Face
-					{/if}
-				</button>
-			{:else}
-				<button
-					class="flex w-full items-center justify-center whitespace-nowrap rounded-full border-2 border-black bg-black px-5 py-2 text-lg font-semibold text-gray-100 transition-colors hover:bg-gray-900"
-					on:click={(e) => {
-						if (!cookiesAreEnabled()) {
-							e.preventDefault();
-							window.open(window.location.href, "_blank");
-						}
-						$settings.ethicsModalAccepted = true;
-					}}
-				>
-					Start chatting
-				</button>
+	<div class="flex w-full flex-col items-center rounded-lg bg-white p-4 shadow-md">
+		<h2 class="text-2xl font-semibold text-gray-800">Login</h2>
+		<form on:submit={handleSubmit} class="mt-4 w-full max-w-sm">
+			<div class="mb-4">
+				<label class="block text-sm font-medium text-gray-700">Email</label>
+				<input
+					type="email"
+					bind:value={email}
+					required
+					class="mt-1 w-full rounded-md border px-3 py-2 focus:outline-none"
+				/>
+			</div>
+			<div class="mb-4">
+				<label class="block text-sm font-medium text-gray-700">Password</label>
+				<input
+					type="password"
+					bind:value={password}
+					required
+					class="mt-1 w-full rounded-md border px-3 py-2 focus:outline-none"
+				/>
+			</div>
+			{#if error}
+				<p class="mb-4 text-sm text-red-500">{error}</p>
 			{/if}
+			<button
+				type="submit"
+				class="w-full rounded-md bg-blue-500 px-4 py-2 text-white focus:outline-none hover:bg-blue-700"
+				>Login</button
+			>
 		</form>
 	</div>
 </Modal>

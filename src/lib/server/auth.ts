@@ -1,6 +1,7 @@
 import { Issuer, BaseClient, type UserinfoResponse, TokenSet, custom } from "openid-client";
 import { addHours, addWeeks } from "date-fns";
 import { env } from "$env/dynamic/private";
+import { env as envPublic } from "$env/dynamic/public";
 import { sha256 } from "$lib/utils/sha256";
 import { z } from "zod";
 import { dev } from "$app/environment";
@@ -39,7 +40,8 @@ export const OIDConfig = z
 	})
 	.parse(JSON5.parse(env.OPENID_CONFIG));
 
-export const requiresUser = !!OIDConfig.CLIENT_ID && !!OIDConfig.CLIENT_SECRET;
+export const requiresUser =
+	(!!OIDConfig.CLIENT_ID && !!OIDConfig.CLIENT_SECRET) || !!envPublic.PUBLIC_FIREBASE_API_KEY;
 
 export function refreshSessionCookie(cookies: Cookies, sessionId: string) {
 	cookies.set(env.COOKIE_NAME, sessionId, {

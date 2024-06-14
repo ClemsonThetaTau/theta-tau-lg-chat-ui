@@ -8,7 +8,6 @@ import { error, type Cookies } from "@sveltejs/kit";
 import crypto from "crypto";
 import { sha256 } from "$lib/utils/sha256";
 import { addWeeks } from "date-fns";
-import { OIDConfig } from "$lib/server/auth";
 
 export async function updateUser(params: {
 	userData: UserinfoResponse;
@@ -39,14 +38,9 @@ export async function updateUser(params: {
 			sub: z.string(),
 			email: z.string().email().optional(),
 		})
-		.setKey(OIDConfig.NAME_CLAIM, z.string())
 		.refine((data) => data.preferred_username || data.email, {
 			message: "Either preferred_username or email must be provided by the provider.",
 		})
-		.transform((data) => ({
-			...data,
-			name: data[OIDConfig.NAME_CLAIM],
-		}))
 		.parse(userData) as {
 		preferred_username?: string;
 		email?: string;

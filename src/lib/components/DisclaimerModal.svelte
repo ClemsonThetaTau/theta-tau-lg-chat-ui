@@ -8,6 +8,9 @@
 	import { cookiesAreEnabled } from "$lib/utils/cookiesAreEnabled";
 	import Logo from "./icons/Logo.svelte";
 
+	import { auth } from "$lib/firebase";
+	import { signInWithEmailAndPassword } from "firebase/auth";
+
 	const settings = useSettingsStore();
 </script>
 
@@ -51,7 +54,61 @@
 				</button>
 			{/if}
 			{#if $page.data.loginEnabled}
-				<form action="{base}/login" target="_parent" method="POST" class="w-full">
+				<form
+					class="w-full"
+					on:submit|preventDefault|stopPropagation={async (event) => {
+						const form = event.target;
+						const formData = new FormData(form);
+						const username = formData.get("username");
+						const password = formData.get("password");
+
+						try {
+							const userCredential = await signInWithEmailAndPassword(auth, username, password);
+							const idToken = await userCredential.user.getIdToken();
+
+							const response = await fetch("/login", {
+								method: "POST",
+								headers: {
+									"Content-Type": "application/x-www-form-urlencoded",
+								},
+								body: new URLSearchParams({ idToken }),
+							});
+
+							if (!response.ok) {
+								// Handle response error if needed
+								console.error("Authentication failed");
+								console.error(response.statusText);
+								return;
+							} else {
+								// Redirect or handle successful login
+								window.location.href = "/"; // Adjust the URL to your desired post-login page
+								$settings.ethicsModalAccepted = true;
+							}
+						} catch (error) {
+							console.error("Error during login:", error);
+						}
+					}}
+				>
+					<div class="mb-4">
+						<input
+							name="username"
+							type="text"
+							class="w-full rounded border border-gray-300 p-2"
+							placeholder="Username"
+							required
+						/>
+					</div>
+
+					<div class="mb-4">
+						<input
+							name="password"
+							type="password"
+							class="w-full rounded border border-gray-300 p-2"
+							placeholder="Password"
+							required
+						/>
+					</div>
+
 					<button
 						type="submit"
 						class="flex w-full items-center justify-center whitespace-nowrap rounded-full border-2 border-black bg-black px-5 py-2 text-lg font-semibold text-gray-100 transition-colors hover:bg-gray-900"

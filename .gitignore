@@ -12,3 +12,6 @@ SECRET_CONFIG
 !.env.ci
 !.env
 gcp-*.json
+
+# Firebase
+theta-tau-lambda-gamma-firebase-adminsdk-*.json
