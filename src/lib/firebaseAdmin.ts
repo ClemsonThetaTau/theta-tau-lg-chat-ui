@@ -1,10 +1,9 @@
 import * as admin from "firebase-admin";
+import { env } from "$env/dynamic/private";
 import path from "path";
 
 // Path to your service account key
-const serviceAccountPath = path.resolve(
-	"./theta-tau-lambda-gamma-firebase-adminsdk-50pfh-274cde6834.json"
-);
+const serviceAccountPath = path.resolve(env.FIREBASE_ADMIN_KEY);
 
 if (!admin.apps.length) {
 	admin.initializeApp({
