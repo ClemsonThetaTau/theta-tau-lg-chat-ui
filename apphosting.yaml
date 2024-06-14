@@ -1,3 +1,6 @@
 env:
   - variable: DOTENV_LOCAL
     secret: projects/786566986467/secrets/theta-tau-chat-local/versions/1
+    availability:
+      - BUILD
+      - RUNTIME
