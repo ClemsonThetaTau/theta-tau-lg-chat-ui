@@ -23,7 +23,8 @@ const modelConfig = z.object({
 	name: z.string().default(""),
 	displayName: z.string().min(1).optional(),
 	description: z.string().min(1).optional(),
-	logoUrl: z.string().url().optional(),
+	// logoUrl: z.string().url().optional(), Removed because wanted to be able to use partial urls, probably a better fix for this in future
+	logoUrl: z.string().optional(),
 	websiteUrl: z.string().url().optional(),
 	modelUrl: z.string().url().optional(),
 	tokenizer: z
