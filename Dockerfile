@@ -25,8 +25,6 @@ RUN --mount=type=cache,target=/app/.npm \
 
 COPY --link --chown=1000 . .
 
-ENV DOTENV_LOCAL=$DOTENV_LOCAL
-
 RUN npm run build
 
 # mongo image
@@ -74,7 +72,15 @@ ENV HOME=/home/user \
 WORKDIR /app
 
 # add a .env.local if the user doesn't bind a volume to it
-RUN touch /app/.env.local
+# RUN touch /app/.env.local
+# RUN --mount=type=secret,id=dotenv_local \
+#  export DOTENV_LOCAL=$(cat /run/secrets/dotenv_local) && \
+#  cat $DOTENV_LOCAL > /app/.env.local && \
+#  cat /app/.env.local
+
+ARG DOTENV_LOCAL
+ENV DOTENV_LOCAL=${DOTENV_LOCAL}
+RUN echo ${DOTENV_LOCAL} > /app/.env.local
 
 # get the default config, the entrypoint script and the server script
 COPY --chown=1000 package.json /app/package.json
