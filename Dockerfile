@@ -72,7 +72,11 @@ ENV HOME=/home/user \
 WORKDIR /app
 
 # add a .env.local if the user doesn't bind a volume to it
-RUN touch /app/.env.local
+# RUN touch /app/.env.local
+ARG DOTENV_LOCAL
+RUN echo $DOTENV_LOCAL > /app/.env.local
+RUN echo "LOGGING DOTENV_LOCAL"
+RUN echo $DOTENV_LOCAL
 
 # get the default config, the entrypoint script and the server script
 COPY --chown=1000 package.json /app/package.json

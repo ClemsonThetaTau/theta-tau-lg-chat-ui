@@ -1,45 +1,6 @@
 env:
-  - variable: FIREBASE_ADMIN_KEY
-    secret: projects/786566986467/secrets/theta-tau-chat-firebase-admin-key
+  - variable: DOTENV_LOCAL
+    secret: projects/786566986467/secrets/theta-tau-chat-dotenv-local
     availability:
       - BUILD
       - RUNTIME
-  
-  - variable: PUBLIC_FIREBASE_CONFIG
-    value: '{
-      apiKey: "AIzaSyAXWZ2GUKOBaRi10YQWzMqw1-s5krK2ZSQ",
-      authDomain: "theta-tau-lambda-gamma.firebaseapp.com",
-      projectId: "theta-tau-lambda-gamma",
-      storageBucket: "theta-tau-lambda-gamma.appspot.com",
-      messagingSenderId: "786566986467",
-      appId: "1:786566986467:web:0c6eb91ad44c21755e23d6",
-      measurementId: "G-6P0JCB7FFS"
-    }'
-  
-  - variable: MONGODB_URL
-    secret: projects/786566986467/secrets/theta-tau-chat-mongodb-url
-
-  - variable: HF_TOKEN
-    secret: projects/786566986467/secrets/theta-tau-chat-hf-token
-  - variable: OPENAI_API_KEY
-    secret: projects/786566986467/secrets/theta-tau-chat-openai-api-key
-  - variable: ANTHROPIC_API_KEY
-    secret: projects/786566986467/secrets/theta-tau-chat-anthropic-api-key
-  
-  - variable: PUBLIC_APP_NAME
-    value: Theta Tau Chat
-  
-  - variable: PUBLIC_APP_ASSETS
-    value: chatui
-
-  - variable: PUBLIC_APP_COLOR
-    value: rose
-
-  - variable: PUBLIC_APP_DESCRIPTION
-    value: "Lambda Gamma Chapters AI Chat App!"
-  
-  - variable: PUBLIC_ORIGIN
-    value: https://chat.clemsonthetatau.com
-
-  - variable: MODELS
-    secret: projects/786566986467/secrets/theta-tau-chat-models
