@@ -3,7 +3,7 @@ import { initializeApp } from "firebase/app";
 import { getAuth } from "firebase/auth";
 import { env as envPublic } from "$env/dynamic/public";
 
-const firebaseConfig = JSON.parse(envPublic.FIREBASE_CONFIG);
+const firebaseConfig = JSON.parse(envPublic.PUBLIC_FIREBASE_CONFIG);
 
 const app = initializeApp(firebaseConfig);
 const auth = getAuth(app);
