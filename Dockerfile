@@ -25,6 +25,8 @@ RUN --mount=type=cache,target=/app/.npm \
 
 COPY --link --chown=1000 . .
 
+ENV DOTENV_LOCAL=$DOTENV_LOCAL
+
 RUN npm run build
 
 # mongo image
