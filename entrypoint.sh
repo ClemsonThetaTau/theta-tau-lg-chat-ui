@@ -1,5 +1,7 @@
 ENV_LOCAL_PATH=/app/.env.local
 
+echo "Starting the application"
+
 if test -z "${DOTENV_LOCAL}" ; then
     if ! test -f "${ENV_LOCAL_PATH}" ; then
         echo "DOTENV_LOCAL was not found in the ENV variables and .env.local is not set using a bind volume. Make sure to set environment variables properly. "
