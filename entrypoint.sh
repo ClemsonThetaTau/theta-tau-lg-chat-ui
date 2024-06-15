@@ -10,8 +10,12 @@ if test -z "${DOTENV_LOCAL}" ; then
     fi;
 else
     echo "DOTENV_LOCAL was found in the ENV variables. Creating .env.local file."
-    cat <<< "$DOTENV_LOCAL" > ${ENV_LOCAL_PATH}
+    echo "$DOTENV_LOCAL" | base64 --decode > ${ENV_LOCAL_PATH}
+    # cat <<< "$DOTENV_LOCAL" > ${ENV_LOCAL_PATH}
 fi;
+
+echo "Here is the DOTENV_LOCAL"
+cat ${ENV_LOCAL_PATH}
 
 if [ "$INCLUDE_DB" = "true" ] ; then
     echo "Starting local MongoDB instance"
