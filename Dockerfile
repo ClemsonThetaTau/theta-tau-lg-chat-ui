@@ -81,6 +81,7 @@ WORKDIR /app
 ARG DOTENV_LOCAL
 ENV DOTENV_LOCAL=${DOTENV_LOCAL}
 RUN echo ${DOTENV_LOCAL} > /app/.env.local
+RUN echo ${DOTENV_LOCAL}
 
 # get the default config, the entrypoint script and the server script
 COPY --chown=1000 package.json /app/package.json
