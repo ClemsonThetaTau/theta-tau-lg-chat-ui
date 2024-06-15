@@ -96,6 +96,4 @@ USER user
 
 RUN chmod +x /app/entrypoint.sh
 
-EXPOSE 3000
-
 CMD ["/bin/bash", "-c", "/app/entrypoint.sh"]
