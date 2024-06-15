@@ -4,3 +4,9 @@ env:
     availability:
       - BUILD
       - RUNTIME
+
+  - variable: PORT
+    value: 3000
+    availability:
+      - BUILD
+      - RUNTIME
