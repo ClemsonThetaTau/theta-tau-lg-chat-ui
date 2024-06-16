@@ -16,7 +16,7 @@ RUN --mount=type=cache,target=/app/.npm \
 FROM builder-production as builder
 
 ARG APP_BASE=
-ARG PUBLIC_APP_COLOR=blue
+ARG PUBLIC_APP_COLOR=rose
 ENV BODY_SIZE_LIMIT=15728640
 
 RUN --mount=type=cache,target=/app/.npm \
