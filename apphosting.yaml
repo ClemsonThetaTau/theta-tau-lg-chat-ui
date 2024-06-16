@@ -1,6 +1,6 @@
 env:
   - variable: DOTENV_LOCAL
-    value: MONGODB_URL=mongodb+srv://stelath:ZQy4Xf48UxUFnVug@theta-tau-chat.x9uqyva.mongodb.net/?retryWrites=true&w=majority&appName=Theta-Tau-Chat
+    secret: projects/786566986467/secrets/theta-tau-chat-dotenv-local
     availability:
       - BUILD
       - RUNTIME

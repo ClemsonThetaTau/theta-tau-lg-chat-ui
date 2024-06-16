@@ -1,5 +1,3 @@
-sleep 5
-
 ENV_LOCAL_PATH=/app/.env.local
 
 echo "Starting the application"
